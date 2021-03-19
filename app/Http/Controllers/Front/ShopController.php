@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductComment;
@@ -39,8 +40,9 @@ class ShopController extends Controller
 
     public function index(Request $request) {
 
-        //Get Categories
+        //Get Categories,brands
         $categories = ProductCategory::all();
+        $brands = Brand::all();
 
         //Get Products
         $penPage = $request->show ?? 3;
@@ -49,15 +51,18 @@ class ShopController extends Controller
 
         $products = Product::where('name', 'like', '%' . $search . '%');
 
+        $products = $this->filter($products,$request);
+
         $products = $this->sortAndPagination($products,$sortBy,$penPage);
 
-        return view('front.shop.index',compact('categories','products'));
+        return view('front.shop.index',compact('categories','brands','products'));
     }
 
     public function category($categoryName,Request $request) {
 
-        //Get Categories
+        //Get Categories,brands
         $categories = Product::all();
+        $brands = Brand::all();
 
         //get products
         $penPage = $request->show ?? 3;
@@ -65,9 +70,11 @@ class ShopController extends Controller
 
         $products = ProductCategory::where('name',$categoryName)->first()->products->toQuery();
 
+        $products = $this->filter($products,$request);
+
         $products = $this->sortAndPagination($products,$sortBy,$penPage);
 
-        return view('front.shop.index',compact('categories','products'));
+        return view('front.shop.index',compact('categories','brands','products'));
     }
 
     public function sortAndPagination($products, $sortBy, $penPage){
@@ -96,6 +103,37 @@ class ShopController extends Controller
         $products = $products->paginate($penPage);
 
         $products->appends(['sort_by' => $sortBy,'show' => $penPage ]);
+
+        return $products;
+    }
+
+    public function filter($products, Request $request)
+    {
+        $brands = $request->brand ?? [];
+        $brand_ids = array_keys($brands);
+        $products = $brand_ids != null ? $products->whereIn('brand_id', $brand_ids) : $products;
+
+        //Price
+        $priceMin = $request->price_min;
+        $priceMax = $request->price_max;
+        $priceMin = str_replace('$', '',$priceMin);
+        $priceMax = str_replace('$', '',$priceMax);
+        $products = ($priceMin != null && $priceMax != null) ? $products->whereBetween('price',[$priceMin,$priceMax]) : $products;
+
+        //color
+        $color = $request->color;
+        $products = $color != null
+            ? $products->whereHas('productDetails', function ($query) use ($color) {
+                return $query->where('color' , $color)->where('qty','>',0);
+            })
+            : $products;
+
+        //Size
+        $size = $request->size;
+        $products = $size != null
+            ? $products->whereHas('productDetails', function ($query) use ($size){
+                return $query->where('size',$size)->where('qty', '>', 0);
+            }) : $products;
 
         return $products;
     }

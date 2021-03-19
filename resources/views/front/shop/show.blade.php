@@ -295,7 +295,7 @@
                                                 <td class="p-catagory">Size</td>
                                                 <td>
                                                     <div class="p-size">
-                                                        @foreach(array_unique(array_column($product->productDetails->toArray(),'size')) as $productSize) as $productSize)
+                                                        @foreach(array_unique(array_column($product->productDetails->toArray(),'size')) as $productSize)
                                                             {{ $productSize }}
                                                         @endforeach
                                                     </div>
@@ -304,9 +304,12 @@
                                             <tr>
                                                 <td class="p-catagory">Color</td>
                                                 @foreach(array_unique(array_column($product->productDetails->toArray(),'color')) as $productColor)
-                                                    <td><span class="{{ $productColor }}"></span></td>
+                                                 <td>
+                                                     <div class="cs-color">
+                                                         <span class="cs-{{ $productColor }}"></span>
+                                                     </div>
+                                                  </td>
                                                 @endforeach
-
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Sku</td>
