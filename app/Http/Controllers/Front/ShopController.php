@@ -14,6 +14,10 @@ class ShopController extends Controller
 {
     //
     public function show($id) {
+        //Get Categories,brands
+        $categories = ProductCategory::all();
+        $brands = Brand::all();
+
         $product = Product::findOrFail($id);
 
         $avgRating = 0;
@@ -27,7 +31,7 @@ class ShopController extends Controller
             ->limit(4)
             ->get();
 
-        return view('front.shop.show',compact('product','avgRating','relatedProducts'));
+        return view('front.shop.show',compact('product','categories','brands','avgRating','relatedProducts'));
     }
 
 
