@@ -128,7 +128,7 @@
                                 </div>
                                 <div class="select-button">
                                     <a href="./cart" class="primary-btn view-card">VIEW CARD</a>
-                                    <a href="check-out.html" class="primary-btn checkout-btn">CHECK OUT</a>
+                                    <a href="./checkout" class="primary-btn checkout-btn">CHECK OUT</a>
                                 </div>
                             </div>
                         </li>

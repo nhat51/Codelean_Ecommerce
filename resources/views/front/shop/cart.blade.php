@@ -46,7 +46,7 @@
                                     <td class="qua-col first-row">
                                         <div class="quantity">
                                             <div class="pro-qty">
-                                                <input type="text" value="{{ $cart->qty }}">
+                                                <input type="text" value="{{ $cart->qty }}" data-rowid="{{ $cart->rowId }}" >
                                             </div>
                                         </div>
                                     </td>
@@ -77,7 +77,7 @@
                                     <li class="subtotal">Subtotal <span>${{ $subtotal }}</span></li>
                                     <li class="cart-total">Total <span>${{ $total }}</span></li>
                                 </ul>
-                                <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                <a href="./checkout" class="proceed-btn">PROCEED TO CHECK OUT</a>
                             </div>
                         </div>
                     </div>
