@@ -118,7 +118,7 @@
                                     <a data-toggle="tab" href="#tab-2" role="tab">SPECIFICATIONS</a>
                                 </li>
                                 <li>
-                                    <a data-toggle="tab" href="#tab-3" role="tab">Customer Reviews (02)</a>
+                                    <a data-toggle="tab" href="#tab-3" role="tab">Customer Reviews ({{ count($product->productComment) }})</a>
                                 </li>
                             </ul>
                         </div>
@@ -183,13 +183,15 @@
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Color</td>
-                                                @foreach(array_unique(array_column($product->productDetails->toArray(),'color')) as $productColor)
                                                  <td>
+                                                     @foreach(array_unique(array_column($product->productDetails->toArray(),'color')) as $productColor)
                                                      <div class="cs-color">
-                                                         <span class="cs-{{ $productColor }}"></span>
+                                                         <div class="cs-color">
+                                                            <label for="cc-{{$productColor}}" class="cc-{{ $productColor }}"></label>
+                                                         </div>
                                                      </div>
+                                                     @endforeach
                                                   </td>
-                                                @endforeach
                                             </tr>
                                             <tr>
                                                 <td class="p-catagory">Sku</td>
@@ -211,11 +213,13 @@
                                                 </div>
                                                 <div class="avatar-text">
                                                     <div class="at-rating">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
+                                                        @for($i = 1;$i <= 5 ;$i++)
+                                                            @if($i <= $productCmt->rating)
+                                                                <i class="fa fa-star"></i>
+                                                            @else
+                                                                <i class="fa fa-star-o"></i>
+                                                            @endif
+                                                        @endfor
                                                     </div>
                                                     <h5>{{ $productCmt->name }}<span>{{ date('M d, Y', strtotime($productCmt->created_at)) }}</span></h5>
                                                     <div class="at-reply">{{ $productCmt->message }}</div>

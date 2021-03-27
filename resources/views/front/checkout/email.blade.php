@@ -55,7 +55,7 @@
                             <span>{{ $order->phone }}</span>
                         </div>
                         <div class="col-6" style="flex: 0 0 50%; width: 50%; box-sizing: border-box;">
-                            <b>Order date:</b> {{ date('d/m/yy H:i', strtotime($order->created_at)) }}
+                            <b>Order date:</b> {{ date('d/m/Y H:i', strtotime($order->created_at)) }}
                             <br>
                             <b>Address:</b> {{ $order->street_address . ' - ' .  $order->town_city }}
                         </div>
